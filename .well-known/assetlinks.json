@@ -1,10 +1,12 @@
-[{
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target": {
-    "namespace": "android_app",
-    "package_name": "com.doearno.app",
-    "sha256_cert_fingerprints": [
-      "C6:39:AF:5A:C0:65:B8:05:99:CB:5D:A0:FB:69:6B:2A:6F:08:F7:FD:DC:3D:D9:60:0E:80:5E:18:3C:53:82:FE"
-    ]
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.doearno.app",
+      "sha256_cert_fingerprints": [
+        "76:FE:AB:49:28:DE:81:37:08:A7:7A:D0:5E:DD:97:41:FD:A4:CD:A1:68:F2:0A:70:1B:D7:FD:01:C0:A8:D0:33"
+      ]
+    }
   }
-}]
+]
