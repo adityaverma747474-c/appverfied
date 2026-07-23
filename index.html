@@ -3,106 +3,448 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doearno - Opening App...</title>
+    <title>DoEarno - Earn While You Learn</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f3a 100%);
+            font-family: 'Inter', sans-serif;
+            background: #060b18;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-family: 'Segoe UI', sans-serif;
-            color: white;
+            overflow: hidden;
+            position: relative;
         }
-        .logo {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #6c63ff, #48cfad);
-            border-radius: 20px;
+
+        /* Animated background orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.25;
+            animation: float 8s ease-in-out infinite;
+            pointer-events: none;
+        }
+        .orb-1 {
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, #7c3aed, transparent);
+            top: -150px; left: -150px;
+            animation-delay: 0s;
+        }
+        .orb-2 {
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, #06b6d4, transparent);
+            bottom: -100px; right: -100px;
+            animation-delay: -3s;
+        }
+        .orb-3 {
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, #10b981, transparent);
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -6s;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-30px) scale(1.05); }
+        }
+
+        /* Particles */
+        .particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            width: 2px; height: 2px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
+            animation: rise linear infinite;
+        }
+        @keyframes rise {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        /* Grid lines */
+        .grid {
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+
+        /* Card */
+        .card {
+            position: relative;
+            z-index: 10;
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 32px;
+            padding: 48px 40px;
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 32px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+            animation: cardIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* App icon */
+        .app-icon-wrap {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 24px;
+        }
+        .app-icon-glow {
+            position: absolute;
+            inset: -20px;
+            background: radial-gradient(circle, rgba(124,58,237,0.5), transparent 70%);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+        .app-icon {
+            position: relative;
+            width: 96px;
+            height: 96px;
+            background: linear-gradient(135deg, #7c3aed 0%, #06b6d4 50%, #10b981 100%);
+            border-radius: 26px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 36px;
-            margin-bottom: 24px;
-            box-shadow: 0 8px 32px rgba(108,99,255,0.4);
+            font-size: 44px;
+            box-shadow: 0 8px 32px rgba(124,58,237,0.5), 0 0 0 1px rgba(255,255,255,0.1);
         }
-        h1 { font-size: 28px; margin-bottom: 10px; }
-        p { color: #aaa; font-size: 15px; margin-bottom: 32px; }
-        .spinner {
-            width: 48px;
-            height: 48px;
-            border: 4px solid rgba(108,99,255,0.2);
-            border-top-color: #6c63ff;
+
+        /* Badge */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(16,185,129,0.15);
+            border: 1px solid rgba(16,185,129,0.3);
+            color: #10b981;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 5px 14px;
+            border-radius: 50px;
+            margin-bottom: 14px;
+        }
+        .badge-dot {
+            width: 6px; height: 6px;
+            background: #10b981;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 24px;
+            animation: blink 1.5s ease-in-out infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* App name */
+        h1 {
+            font-size: 36px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 0%, #c4b5fd 50%, #67e8f9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+        }
+        .tagline {
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 28px;
+            font-weight: 400;
+        }
+
+        /* Stars */
+        .stars-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 28px;
+        }
+        .stars { color: #fbbf24; font-size: 16px; letter-spacing: 2px; }
+        .rating-text { color: rgba(255,255,255,0.5); font-size: 13px; }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+            margin-bottom: 28px;
+        }
+
+        /* Features */
+        .features {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 32px;
+            text-align: left;
+        }
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 14px;
+            padding: 12px 16px;
+            transition: background 0.3s;
+        }
+        .feature:hover { background: rgba(255,255,255,0.06); }
+        .feature-icon {
+            width: 38px; height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        .fi-1 { background: rgba(124,58,237,0.2); }
+        .fi-2 { background: rgba(6,182,212,0.2); }
+        .fi-3 { background: rgba(16,185,129,0.2); }
+        .feature-text h3 { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.9); margin-bottom: 2px; }
+        .feature-text p { font-size: 11px; color: rgba(255,255,255,0.4); }
+
+        /* CTA Button */
+        .cta-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #7c3aed, #06b6d4);
+            color: white;
+            text-decoration: none;
+            padding: 16px 32px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(124,58,237,0.4), 0 0 0 1px rgba(255,255,255,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+        .cta-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(124,58,237,0.5); }
+        .cta-btn:hover::before { opacity: 1; }
+        .cta-btn:active { transform: translateY(0); }
+        .playstore-icon {
+            width: 28px; height: 28px;
+        }
+
+        /* Spinner CTA */
+        .spinner-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.7);
+            padding: 16px 32px;
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 600;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+        .mini-spinner {
+            width: 20px; height: 20px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-top-color: #7c3aed;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .btn {
-            background: linear-gradient(135deg, #6c63ff, #48cfad);
-            color: white;
-            border: none;
-            padding: 14px 32px;
-            border-radius: 50px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            box-shadow: 0 4px 20px rgba(108,99,255,0.4);
-            transition: transform 0.2s, box-shadow 0.2s;
+
+        .status-text {
+            font-size: 12px;
+            color: rgba(255,255,255,0.35);
+            margin-top: 4px;
         }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(108,99,255,0.5); }
-        .status { font-size: 13px; color: #888; margin-top: 16px; }
+
+        /* Safe badge */
+        .safe-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            color: rgba(255,255,255,0.3);
+            font-size: 12px;
+            margin-top: 12px;
+        }
     </style>
 </head>
 <body>
-    <div class="logo">💰</div>
-    <h1>DoEarno</h1>
-    <p>Earn while you learn. Opening your task...</p>
-    <div class="spinner" id="spinner"></div>
-    <a id="playstoreBtn" class="btn" href="https://play.google.com/store/apps/details?id=com.doearno.app" style="display:none;">
-        📲 Download from Play Store
-    </a>
-    <p class="status" id="statusText">Opening DoEarno App...</p>
+    <!-- Background -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid"></div>
+    <div class="particles" id="particles"></div>
+
+    <!-- Main Card -->
+    <div class="card">
+        <!-- App Icon -->
+        <div class="app-icon-wrap">
+            <div class="app-icon-glow"></div>
+            <div class="app-icon">💰</div>
+        </div>
+
+        <!-- Badge -->
+        <div class="badge">
+            <span class="badge-dot"></span>
+            Available on Play Store
+        </div>
+
+        <!-- App Name -->
+        <h1>DoEarno</h1>
+        <p class="tagline">Complete tasks & earn real rewards 🚀</p>
+
+        <!-- Stars -->
+        <div class="stars-row">
+            <span class="stars">★★★★★</span>
+            <span class="rating-text">4.8 · 10K+ downloads</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Features -->
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon fi-1">📋</div>
+                <div class="feature-text">
+                    <h3>Complete Simple Tasks</h3>
+                    <p>Surveys, quizzes, and fun activities</p>
+                </div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon fi-2">💸</div>
+                <div class="feature-text">
+                    <h3>Earn Real Money</h3>
+                    <p>Withdraw directly to your bank account</p>
+                </div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon fi-3">👥</div>
+                <div class="feature-text">
+                    <h3>Refer & Earn More</h3>
+                    <p>Invite friends and earn bonus rewards</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div id="spinner-state" class="spinner-btn" style="display:none;">
+            <div class="mini-spinner"></div>
+            <span>Opening DoEarno...</span>
+        </div>
+
+        <a id="playstoreBtn" class="cta-btn" href="https://play.google.com/store/apps/details?id=com.doearno.app">
+            <svg class="playstore-icon" viewBox="0 0 48 48" fill="none">
+                <path d="M8 44V4l28 20L8 44z" fill="url(#g1)"/>
+                <path d="M8 4l20 20-8 8L8 4z" fill="url(#g2)"/>
+                <path d="M8 44l12-12 8 8L8 44z" fill="url(#g3)"/>
+                <path d="M36 24L20 44l8-12 8-8z" fill="url(#g4)"/>
+                <defs>
+                    <linearGradient id="g1" x1="8" y1="24" x2="36" y2="24" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#00C6FF"/>
+                        <stop offset="1" stop-color="#0072FF"/>
+                    </linearGradient>
+                    <linearGradient id="g2" x1="8" y1="4" x2="20" y2="24" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#32FF7E"/>
+                        <stop offset="1" stop-color="#00C6FF"/>
+                    </linearGradient>
+                    <linearGradient id="g3" x1="8" y1="32" x2="20" y2="44" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#FFE000"/>
+                        <stop offset="1" stop-color="#FF6B00"/>
+                    </linearGradient>
+                    <linearGradient id="g4" x1="20" y1="32" x2="36" y2="24" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#FF4B2B"/>
+                        <stop offset="1" stop-color="#FF416C"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+            Download on Play Store
+        </a>
+
+        <p class="status-text" id="statusText">Free · No ads · Safe & Secure</p>
+
+        <div class="safe-badge">
+            🔒 Verified by Google Play Protect
+        </div>
+    </div>
 
     <script>
+        // Particles
+        var pContainer = document.getElementById('particles');
+        for (var i = 0; i < 30; i++) {
+            var p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.width = p.style.height = (Math.random() * 3 + 1) + 'px';
+            p.style.animationDuration = (Math.random() * 10 + 8) + 's';
+            p.style.animationDelay = (Math.random() * 10) + 's';
+            pContainer.appendChild(p);
+        }
+
         var PLAYSTORE_URL = 'https://play.google.com/store/apps/details?id=com.doearno.app';
         var PACKAGE_NAME = 'com.doearno.app';
-
-        // Get full path to pass to app
         var path = window.location.pathname + window.location.search;
-
-        // Build deep link intent URL for Android
         var intentUrl = 'intent://' + window.location.host + path +
             '#Intent;scheme=https;package=' + PACKAGE_NAME +
             ';S.browser_fallback_url=' + encodeURIComponent(PLAYSTORE_URL) + ';end';
 
         var isAndroid = /android/i.test(navigator.userAgent);
-        var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-
-        function goToPlayStore() {
-            document.getElementById('spinner').style.display = 'none';
-            document.getElementById('playstoreBtn').style.display = 'inline-block';
-            document.getElementById('statusText').textContent = 'App not found. Download from Play Store!';
-            window.location.href = PLAYSTORE_URL;
-        }
 
         if (isAndroid) {
-            // Try to open the app via intent URL
-            document.getElementById('statusText').textContent = 'Opening DoEarno App...';
+            document.getElementById('spinner-state').style.display = 'flex';
+            document.getElementById('playstoreBtn').style.display = 'none';
+            document.getElementById('statusText').textContent = 'Trying to open DoEarno app...';
             window.location.href = intentUrl;
-
-            // If app not installed, intent URL will fail silently
-            // After 2.5 seconds, if still on page, redirect to Play Store
-            setTimeout(goToPlayStore, 2500);
-        } else {
-            // Not Android - just go to Play Store or show info
-            document.getElementById('statusText').textContent = 'Please open this link on your Android phone.';
-            document.getElementById('spinner').style.display = 'none';
-            document.getElementById('playstoreBtn').style.display = 'inline-block';
+            setTimeout(function() {
+                document.getElementById('spinner-state').style.display = 'none';
+                document.getElementById('playstoreBtn').style.display = 'flex';
+                document.getElementById('statusText').textContent = 'Free · No ads · Safe & Secure';
+                window.location.href = PLAYSTORE_URL;
+            }, 2500);
         }
     </script>
 </body>
